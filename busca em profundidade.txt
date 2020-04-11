@@ -1,0 +1,80 @@
+%
+% Programas de Busca em Prolog,
+% baseado no livro de Russell e Norvig
+%
+
+% link( A, B ) exite uma estrada de A para B (ou de B para A)
+
+link( 'Oradea', 'Zerind' ).
+link( 'Oradea', 'Sibiu' ).
+link( 'Arad'  , 'Zerind' ).
+link( 'Arad'  , 'Sibiu' ).
+link( 'Arad'  , 'Timisoara' ).
+link( 'Fagaras', 'Sibiu' ).
+link( 'Bucharest', 'Fagaras' ).
+link( 'Sibiu', 'Rimnicu Vilcea').
+link( 'Rimnicu Vilcea', 'Pitesti').
+link( 'Pitesti', 'Bucharest' ).
+
+%etc
+
+% Onde eu quero chegar.  Quero mesmo?
+meta( 'Bucharest' ).
+
+% Lidando com a simetria, sem gerar loop
+ligado( A, B ) :- link( A, B ).
+ligado( A, B ) :- link( B, A ).
+
+%busca_em_profundidade(Inicio, Caminho)
+busca_em_profundidade( Atual, Caminho ) :-
+	bp( Atual, [], Caminho ).
+
+%bp(Inicio, VisitadosAtéAgora, CaminhoRestante)
+bp( N, _, [N] ) :-
+	meta( N ).
+bp( N, Visitados, [N |Ns] ) :-
+	\+ meta( N ),
+	ligado( N, N1 ),
+	\+ passou_por( N1, Visitados ),  % loop-check
+	bp( N1, [N|Visitados], Ns ).
+
+passou_por( N, Ns ) :- member( N, Ns ).
+
+busca_em_largura( Atual, Caminho ) :-
+	bl( [Atual:[]], Caminho ).
+
+%bl(Fila, Caminho )
+bl( [N : Caminho| _], [N|Caminho]) :-
+	meta( N ).
+bl( [N:Ns| Fila], Caminho ) :-
+	\+ meta( N ),
+	bagof( N1:[N|Ns], ligado( N, N1 ), Dests ),
+	append( Fila, Dests, NovaFila ),
+	bl( NovaFila, Caminho ).
+
+
+
+busca_em_profundidade_limitada( Atual, Limite, Caminho ) :-
+	bpl( Atual, Limite, [], Caminho ).
+
+%bp(Inicio, Limite, VisitadosAtéAgora, CaminhoRestante)
+bpl( N, _, _, [N] ) :-
+	meta( N ).
+bpl( N, L, Visitados, [N |Ns] ) :-
+	\+ meta( N ),
+	L > 1,
+	ligado( N, N1 ),
+	L1 is L - 1,
+	\+ passou_por( N1, Visitados ),  % loop-check
+	bpl( N1, L1, [N|Visitados], Ns ).
+
+
+busca_em_profundidade_iterativa( Atual,  Caminho ) :-
+	bpi( Atual, 1,Caminho).
+
+bpi(  Atual, L,Caminho) :-
+	busca_em_profundidade_limitada( Atual, L,Caminho),
+	!. % uma única resposta !!!!!!!
+bpi(  Atual, L,Caminho) :-
+	L1 is L+1,
+	bpi( Atual, L1,Caminho).

@@ -1,0 +1,44 @@
+%valor(barato).
+%valor(justo).
+%valor(caro).
+
+%prazo(rapido).
+%prazo(medio).
+%prazo(demorado).
+
+%qualidade(ruim).
+%qualidade(regular).
+%qualidade(bom).
+
+analise(boa_compra):- valor(barato),prazo(rapido),qualidade(ruim).
+analise(boa_compra):- valor(barato),prazo(rapido),qualidade(regular).
+analise(boa_compra):- valor(barato),prazo(rapido),qualidade(bom).
+analise(boa_compra):- valor(barato),prazo(medio),qualidade(regular).
+analise(boa_compra):- valor(barato),prazo(medio),qualidade(bom).
+analise(boa_compra):- valor(barato),prazo(demorado),qualidade(bom).
+
+analise(ma_compra):-  valor(barato),prazo(medio),qualidade(ruim).
+analise(ma_compra):-  valor(barato),prazo(demorado),qualidade(ruim).
+analise(ma_compra):-  valor(barato),prazo(demorado),qualidade(regular).
+
+analise(boa_compra):- valor(justo),prazo(rapido),qualidade(regular).
+analise(boa_compra):- valor(justo),prazo(rapido),qualidade(bom).
+analise(boa_compra):- valor(justo),prazo(medio),qualidade(bom).
+analise(boa_compra):- valor(justo),prazo(demorado),qualidade(bom).
+
+analise(ma_compra):-  valor(justo),prazo(rapido),qualidade(ruim).
+analise(ma_compra):-  valor(justo),prazo(medio),qualidade(ruim).
+analise(ma_compra):-  valor(justo),prazo(medio),qualidade(regular).
+analise(ma_compra):-  valor(justo),prazo(demorado),qualidade(ruim).
+analise(ma_compra):-  valor(justo),prazo(demorado),qualidade(regular).
+
+analise(boa_compra):- valor(caro),prazo(rapido),qualidade(ruim).
+
+analise(ma_compra):-  valor(caro),prazo(rapido),qualidade(ruim).
+analise(ma_compra):-  valor(caro),prazo(rapido),qualidade(regular).
+analise(ma_compra):-  valor(caro),prazo(medio),qualidade(ruim).
+analise(ma_compra):-  valor(caro),prazo(medio),qualidade(regular).
+analise(ma_compra):-  valor(caro),prazo(medio),qualidade(bom).
+analise(ma_compra):-  valor(caro),prazo(demorado),qualidade(ruim).
+analise(ma_compra):-  valor(caro),prazo(demorado),qualidade(regular).
+analise(ma_compra):-  valor(caro),prazo(demorado),qualidade(bom).
